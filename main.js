@@ -1,6 +1,5 @@
 /*constants*/
 
-const display1El = document.querySelector('.calculator__screen');
 const display2El = document.querySelector('.calculator__result');
 const numbersEl = document.querySelectorAll('.button--operand');
 const operationEl = document.querySelectorAll('.button--operator');
@@ -8,7 +7,6 @@ const equalEl = document.querySelector('.button--equal');
 const clearEl = document.querySelector('.button--clear');
 
 /*Display properties*/
-let dis1Num = '';
 let dis2Num = '';
 let result = 'null';
 let lastOperation = '';
@@ -28,12 +26,14 @@ numbersEl.forEach((number) => {
 	});
 });
 
+//Dot functionality (non-repeating dot!)
+
 operationEl.forEach((operation) => {
 	operation.addEventListener('click', (e) => {
 		if (!dis2Num) result;
 		haveDot = false;
 		const operationName = e.target.innerText;
-		if (dis1Num && dis2Num && lastOperation) {
+		if (dis2Num && lastOperation) {
 			mathOperation();
 		} else {
 			result = parseFloat(dis2Num);
@@ -45,8 +45,8 @@ operationEl.forEach((operation) => {
 });
 
 function clearVar(name = '') {
-	dis1Num += dis2Num + ' ' + name + ' ';
-	display1El.innerText = dis1Num;
+	dis2Num += dis2Num + ' ' + ' ';
+	display2El.innerText = dis2Num;
 	display2El.innerText = '';
 	dis2Num = '';
 }
@@ -64,3 +64,20 @@ function mathOperation() {
 		result = parseFloat(result) / parseFloat(dis2Num);
 	}
 }
+
+//Equal Function
+
+equalEl.addEventListener('click', (e) => {
+	if (!dis2Num) return;
+	haveDot = false;
+	mathOperation();
+	clearVar();
+	display2El.innerText = result;
+});
+
+clearEl.addEventListener('click', (e) => {
+	display2El.innerText = '0';
+	dis2Num = '';
+	result = '';
+	display2El.innerText = '0';
+});
